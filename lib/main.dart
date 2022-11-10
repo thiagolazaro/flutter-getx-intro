@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           // Valor
-          GetBuilder<ValueController>(
+          GetX<ValueController>(
             init: valueController, // Atenção
             builder: (ctrl) {
               return Text('Valor definido: ${ctrl.definedValue}');
@@ -46,21 +46,24 @@ class HomePage extends StatelessWidget {
           ),
 
           // Campo
-          TextField(
-            controller: textController,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 32),
+            child: TextField(
+              controller: textController,
+            ),
           ),
 
           // Botão
-          GetBuilder<ValueController>(
+          GetX<ValueController>(
               init: valueController,
               builder: (ctrl) {
-                return ctrl.isLoading
+                return ctrl.isLoading.value
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
                         onPressed: () {
                           String value = textController.text;
 
-                          valueController.setValue(value);
+                          ctrl.setValue(value);
                         },
                         child: const Text('Confirmar'),
                       );
