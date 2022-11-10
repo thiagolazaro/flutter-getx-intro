@@ -3,6 +3,10 @@ import 'package:get/get.dart';
 import 'package:getx_intro/user_controller.dart';
 
 void main() {
+  // Get.put<UserController>(UserController());
+
+  Get.lazyPut<UserController>(() => UserController());
+
   runApp(const MyApp());
 }
 
@@ -28,12 +32,7 @@ class HomePage extends StatelessWidget {
   final nameController = TextEditingController();
   final ageController = TextEditingController();
 
-  TextStyle commonStyle() => const TextStyle(
-        fontSize: 17,
-        fontWeight: FontWeight.w500,
-      );
-
-  final userController = UserController();
+  final UserController userController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -44,31 +43,10 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Apresentação do nome
-            Obx(() => Text(
-                  'Nome: ${userController.user.value.name}',
-                  style: commonStyle(),
-                )),
-
-            // Apresentação da idade
-            Obx(() => Text(
-                  'idade: ${userController.user.value.age}',
-                  style: commonStyle(),
-                )),
-
-            const Divider(
-              thickness: 1.5,
-              color: Colors.blue,
-              height: 20,
-            ),
-
-            // Espaçamento
-            const SizedBox(height: 20),
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // Campo de Nome
+                // Campo de nome
                 Expanded(
                   child: TextField(
                     controller: nameController,
@@ -78,7 +56,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
 
-                // Botão para salvar a nome
+                // Botão para salvar o nome
                 ElevatedButton(
                   onPressed: () {
                     userController.setUserName(nameController.text);
@@ -94,7 +72,7 @@ class HomePage extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                // Campo de Idade
+                // Campo de idade
                 Expanded(
                   child: TextField(
                     controller: ageController,
@@ -111,11 +89,64 @@ class HomePage extends StatelessWidget {
                   },
                   child: const Text('Salvar'),
                 ),
-
-                // Espaçamento
-                const SizedBox(height: 10),
               ],
             ),
+
+            // Espaçamento
+            const SizedBox(height: 10),
+
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return DataScreen();
+                    },
+                  ),
+                );
+              },
+              child: const Text('Tela de dados'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DataScreen extends StatelessWidget {
+  DataScreen({
+    Key? key,
+  }) : super(key: key);
+
+  TextStyle commonStyle() => const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+      );
+
+  final UserController userController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Dados'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Apresentação do nome
+            Obx(() => Text(
+                  'Nome: ${userController.user.value.name}',
+                  style: commonStyle(),
+                )),
+
+            // Apresentação da idade
+            Obx(() => Text(
+                  'idade: ${userController.user.value.age}',
+                  style: commonStyle(),
+                )),
           ],
         ),
       ),
