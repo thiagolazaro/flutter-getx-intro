@@ -58,6 +58,10 @@ class HomePage extends StatelessWidget {
 
                 final result = await Get.to(() => DataScreen());
 
+                // Navigator.of(context).pushNamed('/signin');
+
+                // Get.toNamed('/sinin');
+
                 print(result);
               },
               child: const Text('Segunda tela'),
