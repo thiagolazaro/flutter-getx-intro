@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:getx_intro/value_controller.dart';
+import 'package:getx_intro/user_controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,45 +25,99 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
 
-  final textController = TextEditingController();
+  final nameController = TextEditingController();
+  final ageController = TextEditingController();
 
-  final valueController = ValueController();
+  TextStyle commonStyle() => const TextStyle(
+        fontSize: 17,
+        fontWeight: FontWeight.w500,
+      );
+
+  final userController = UserController();
 
   @override
   Widget build(BuildContext context) {
-    print('Criou arvore');
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          // Valor
-          Obx(() {
-            return Text('Valor definido: ${valueController.definedValue}');
-          }),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // Apresentação do nome
+            Obx(() => Text(
+                  'Nome: ${userController.user.value.name}',
+                  style: commonStyle(),
+                )),
 
-          // Campo
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 32),
-            child: TextField(
-              controller: textController,
+            // Apresentação da idade
+            Obx(() => Text(
+                  'idade: ${userController.user.value.age}',
+                  style: commonStyle(),
+                )),
+
+            const Divider(
+              thickness: 1.5,
+              color: Colors.blue,
+              height: 20,
             ),
-          ),
 
-          // Botão
-          Obx(() {
-            return valueController.isLoading.value
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: () {
-                      String value = textController.text;
+            // Espaçamento
+            const SizedBox(height: 20),
 
-                      valueController.setValue(value);
-                    },
-                    child: const Text('Confirmar'),
-                  );
-          }),
-        ]),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // Campo de Nome
+                Expanded(
+                  child: TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Nome',
+                    ),
+                  ),
+                ),
+
+                // Botão para salvar a nome
+                ElevatedButton(
+                  onPressed: () {
+                    userController.setUserName(nameController.text);
+                  },
+                  child: const Text('Salvar'),
+                ),
+              ],
+            ),
+
+            // Espaçamento
+            const SizedBox(height: 10),
+
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                // Campo de Idade
+                Expanded(
+                  child: TextField(
+                    controller: ageController,
+                    decoration: const InputDecoration(
+                      labelText: 'Idade',
+                    ),
+                  ),
+                ),
+
+                // Botão para salvar a idade
+                ElevatedButton(
+                  onPressed: () {
+                    userController.setUserAge(int.parse(ageController.text));
+                  },
+                  child: const Text('Salvar'),
+                ),
+
+                // Espaçamento
+                const SizedBox(height: 10),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
