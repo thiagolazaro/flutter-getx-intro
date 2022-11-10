@@ -5,7 +5,7 @@ class ValueController extends GetxController {
 
   bool isLoading = false;
 
-  Future<void> setValeu(String value) async {
+  Future<void> setValue(String value) async {
     isLoading = true;
     update();
 

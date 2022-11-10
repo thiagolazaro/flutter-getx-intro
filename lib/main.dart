@@ -31,27 +31,27 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Criou arvore');
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Valor
-            GetBuilder<ValueController>(
-              init: valueController, // Atenção
-              builder: (ctrl) {
-                return Text('Valor definido: ${ctrl.definedValue}');
-              },
-            ),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          // Valor
+          GetBuilder<ValueController>(
+            init: valueController, // Atenção
+            builder: (ctrl) {
+              return Text('Valor definido: ${ctrl.definedValue}');
+            },
+          ),
 
-            // Campo
-            TextField(
-              controller: textController,
-            ),
+          // Campo
+          TextField(
+            controller: textController,
+          ),
 
-            // Botão
-            GetBuilder<ValueController>(
+          // Botão
+          GetBuilder<ValueController>(
               init: valueController,
               builder: (ctrl) {
                 return ctrl.isLoading
@@ -60,14 +60,12 @@ class HomePage extends StatelessWidget {
                         onPressed: () {
                           String value = textController.text;
 
-                          valueController.setValeu(value);
+                          valueController.setValue(value);
                         },
                         child: const Text('Confirmar'),
                       );
-              },
-            )
-          ],
-        ),
+              }),
+        ]),
       ),
     );
   }
