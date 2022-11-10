@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:getx_intro/user_controller.dart';
 
 void main() {
-  // Get.put<UserController>(UserController());
-
   Get.lazyPut<UserController>(() => UserController());
 
   runApp(const MyApp());
@@ -100,7 +98,7 @@ class HomePage extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return DataScreen();
+                      return const DataScreen();
                     },
                   ),
                 );
@@ -114,8 +112,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class DataScreen extends StatelessWidget {
-  DataScreen({
+class DataScreen extends GetView<UserController> {
+  const DataScreen({
     Key? key,
   }) : super(key: key);
 
@@ -124,7 +122,7 @@ class DataScreen extends StatelessWidget {
         fontWeight: FontWeight.w700,
       );
 
-  final UserController userController = Get.find();
+  // final UserController userController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -138,13 +136,19 @@ class DataScreen extends StatelessWidget {
           children: [
             // Apresentação do nome
             Obx(() => Text(
-                  'Nome: ${userController.user.value.name}',
+                  'Nome: ${controller.user.value.name}',
                   style: commonStyle(),
                 )),
 
+            GetBuilder<UserController>(
+              builder: (controller) {
+                return Text(controller.user.value.name);
+              },
+            ),
+
             // Apresentação da idade
             Obx(() => Text(
-                  'idade: ${userController.user.value.age}',
+                  'idade: ${controller.user.value.age}',
                   style: commonStyle(),
                 )),
           ],
